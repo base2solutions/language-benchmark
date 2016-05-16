@@ -1,3 +1,5 @@
+// package main calculates the dotproduct of two arrays
+// see godoc for main() for use
 package main
 
 import (
@@ -13,6 +15,9 @@ import (
 
 const ARR_SIZE = 1500
 
+// dotprod calculates the dot product of two arrays; this is
+// multi-thread optimized (start, end).  to use as single thread
+// set start to 0 and end to ARR_SIZE
 func dotprod(input1, input2, output *[ARR_SIZE][ARR_SIZE]uint32,
              start, end int,
              wg *sync.WaitGroup) {
@@ -28,6 +33,12 @@ func dotprod(input1, input2, output *[ARR_SIZE][ARR_SIZE]uint32,
     wg.Done()
 }
 
+// dot_product.go takes new-line separated command line arguments
+// file_a (fully qualified path)
+// file_b (fully qualified path)
+// number of threads (int, should be a factor of ARR_SIZE)
+// it returns the elapsed time taken to calculate the dotproduct
+// for the given arrays and number of threads
 func main() {
     reader := bufio.NewReader(os.Stdin)
     file1_raw, _ := reader.ReadString('\n')
