@@ -3,10 +3,12 @@ package main
 import (
     "bufio"
     "os"
+    "fmt"
     "strings"
     "strconv"
     "encoding/binary"
     "sync"
+    "time"
 )
 
 const ARR_SIZE = 1500
@@ -52,6 +54,8 @@ func main() {
     threads_raw, _ := reader.ReadString('\n')
     threads_stripped := strings.TrimSpace(threads_raw)
     threads, _ := strconv.Atoi(threads_stripped)
+    //start timer here -- all inputs have been read
+    time_start := time.Now()
     var wg sync.WaitGroup
     wg.Add(threads)
     for t := 0; t < threads; t ++ {
@@ -60,4 +64,6 @@ func main() {
         go dotprod(&ints1, &ints2, &results, go_start, go_end, &wg)
     }
     wg.Wait()
+    duration := time.Since(time_start)
+    fmt.Printf("sec: %f\n", duration.Seconds())
 }
